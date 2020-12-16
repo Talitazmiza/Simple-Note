@@ -13,7 +13,7 @@ function loadCatatan() {
                 '<th>Lihat Agenda</th>' +
                 '<th>Edit Agenda</th>' +
                 '</thead> <tbody>';
- 
+
             for (i in list_data) {
                 data_app += '<tr>';
                 data_app +=
@@ -26,23 +26,23 @@ function loadCatatan() {
                     '<td><a class="btn btn-warning btn-small" href="javascript:void(0)" onclick="editData(\'' + list_data[i].id_data + '\')">Edit</a></td>';
                 data_app += '</tr>';
             }
- 
+
             data_app += '</tbody></table>';
- 
+
         }
         else {
             data_app = "Catatan masih kosong nih";
         }
- 
- 
+
+
         $('#list-catatan').html(data_app);
         $('#list-catatan').hide();
         $('#list-catatan').fadeIn(100);
     }
 }
- 
+
 function editData(id) {
- 
+
     if (localStorage.list_data && localStorage.id_data) {
         list_data = JSON.parse(localStorage.getItem('list_data'));
         idx_data = 0;
@@ -57,11 +57,11 @@ function editData(id) {
             idx_data++;
         }
         gantiMenu('edit-data');
- 
+
     }
- 
+
 }
- 
+
 function lihatData(id) {
     if (localStorage.list_data && localStorage.id_data) {
         list_data = JSON.parse(localStorage.getItem('list_data'));
@@ -77,13 +77,13 @@ function lihatData(id) {
             idx_data++;
         }
         gantiMenu('lihat-data');
- 
+
     }
 }
- 
- 
+
+
 function simpanData() {
- 
+
     if (!liff.isInClient()) {
         sendAlertIfNotInClient();
     } else {
@@ -96,11 +96,11 @@ function simpanData() {
             alert('Aduh kok error ya...');
         });
     }
- 
+
     nama = $('#nama').val();
     tanggal = $('#tanggal').val();
     agenda = $('#agenda').val();
- 
+
     if (localStorage.list_data && localStorage.id_data) {
         list_data = JSON.parse(localStorage.getItem('list_data'));
         id_data = parseInt(localStorage.getItem('id_data'));
@@ -109,19 +109,19 @@ function simpanData() {
         list_data = [];
         id_data = 0;
     }
- 
+
     id_data++;
     list_data.push({ 'id_data': id_data, 'nama': nama, 'tanggal': tanggal, 'agenda': agenda });
     localStorage.setItem('list_data', JSON.stringify(list_data));
     localStorage.setItem('id_data', id_data);
     document.getElementById('form-data').reset();
     gantiMenu('list-catatan');
- 
+
     return false;
 }
- 
+
 function simpanEditData() {
- 
+
     if (!liff.isInClient()) {
         sendAlertIfNotInClient();
     } else {
@@ -134,38 +134,25 @@ function simpanEditData() {
             alert('Aduh kok error ya...');
         });
     }
- 
+
     id_data = $('#eid_data').val();
     nama = $('#enama').val();
     tanggal = $('#etanggal').val();
     agenda = $('#eagenda').val();
- 
+
     list_data.push({ 'id_data': id_data, 'nama': nama, 'tanggal': tanggal, 'agenda': agenda });
     localStorage.setItem('list_data', JSON.stringify(list_data));
     document.getElementById('eform-data').reset();
     gantiMenu('list-catatan');
- 
+
     return false;
 }
- 
+
 function hapusData(id) {
- 
-    if (!liff.isInClient()) {
-        sendAlertIfNotInClient();
-    } else {
-        liff.sendMessages([{
-            'type': 'text',
-            'text': "Catatan sudah terhapus"
-        }]).then(function() {
-            alert('Catatan sudah dihapus');
-        }).catch(function(error) {
-            alert('Aduh kok nggak bisa');
-        });
-    }
- 
+
     if (localStorage.list_data && localStorage.id_data) {
         list_data = JSON.parse(localStorage.getItem('list_data'));
- 
+
         idx_data = 0;
         for (i in list_data) {
             if (list_data[i].id_data == id) {
@@ -173,15 +160,13 @@ function hapusData(id) {
             }
             idx_data++;
         }
- 
+
         localStorage.setItem('list_data', JSON.stringify(list_data));
         loadCatatan();
     }
 }
 
 
- 
- 
 function gantiMenu(menu) {
     if (menu == "list-catatan") {
         loadCatatan();
